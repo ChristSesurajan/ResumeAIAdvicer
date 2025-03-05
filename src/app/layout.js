@@ -1,7 +1,9 @@
+"use client"
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { useState } from "react";
 import Header from "./components/header";
-import ThemeChanger from '@/app/components/themeChanger';
+import { MantineProvider, ColorSchemeScript } from "@mantine/core";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -18,16 +20,21 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  const [colorScheme, setColorScheme] = useState("light"); // Default theme
+
   return (
     <html lang="en">
-
+       <head>
+        <ColorSchemeScript /> {/* Ensures dark/light mode persists */}
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-   
-        <Header />
-        {children}
-       
+
+    <MantineProvider theme={{ colorScheme }} defaultColorScheme="auto">
+          <Header />
+          {children}
+   </MantineProvider>
       </body>
     </html>
   );
